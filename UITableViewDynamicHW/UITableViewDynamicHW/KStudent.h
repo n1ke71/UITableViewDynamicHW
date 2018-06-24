@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+
 typedef enum{
     
  StudentScoreExellent = 5,
@@ -20,7 +21,6 @@ typedef enum{
 
 @property (strong, nonatomic) NSString *firstName;
 @property (strong, nonatomic) NSString *lastName;
-@property (assign, nonatomic) CGFloat  score;
 @property (assign, nonatomic) StudentScore studentScore;
 @property (strong, nonatomic) UIColor *scoreColor;
 

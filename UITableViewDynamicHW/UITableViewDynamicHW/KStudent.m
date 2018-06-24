@@ -31,9 +31,7 @@ static NSString* lastNames[] = { @"Farrah",@"Laviolette",@"Heal",@"Sechrest",@"R
         self.firstName    = firstNames[arc4random_uniform(15)];
         self.lastName     = lastNames[arc4random_uniform(15)];
         self.studentScore = (StudentScore)arc4random_uniform(4) + 2;
-     
-      //  NSLog(@"self.studentScore = %d",self.studentScore);
-   
+
     }
     return self;
 }
