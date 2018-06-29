@@ -14,8 +14,6 @@
 
 @interface ViewController ()
 
-@property (strong, nonatomic) NSString *modelName;
-
 @end
 
 @implementation ViewController
@@ -28,133 +26,86 @@
     
     self.tableView.contentInset = inset;
     self.tableView.scrollIndicatorInsets = inset;
-    
-
-    KGroup *groupScoreExellent = [[KGroup alloc]init];
-    groupScoreExellent.students = [NSMutableArray array];
-    groupScoreExellent.name = @"ScoreExellent";
-    
-    KGroup *groupStudentScoreGood = [[KGroup alloc]init];
-    groupStudentScoreGood.students = [NSMutableArray array];
-    groupStudentScoreGood.name = @"ScoreGood";
-    
-    KGroup *groupStudentScoreSatisfactionly = [[KGroup alloc]init];
-    groupStudentScoreSatisfactionly.students = [NSMutableArray array];
-    groupStudentScoreSatisfactionly.name = @"ScoreSatisfactionly";
-    
-    KGroup *groupStudentScoreBad = [[KGroup alloc]init];
-    groupStudentScoreBad.students = [NSMutableArray array];
-    groupStudentScoreBad.name = @"ScoreBad";
-    
-    NSMutableArray *studentsArray = [NSMutableArray array];
-    
-    for (int i = 0;  i < 30; i++) {
-        
-        KStudent *student = [[KStudent alloc]init];
-        
-        [studentsArray addObject: student];
-
-    }
-
-    groupScoreExellent.students = [self sortingByScore: studentsArray byScore: StudentScoreExellent];
-    groupStudentScoreGood.students = [self sortingByScore: studentsArray byScore: StudentScoreGood];
-    groupStudentScoreSatisfactionly.students = [self sortingByScore: studentsArray byScore: StudentScoreSatisfactionly];
-    groupStudentScoreBad.students = [self sortingByScore: studentsArray byScore: StudentScoreBad];
-    
-
-    KGroupModels *groupModels = [[KGroupModels alloc]init];
-    groupModels.name = @"RGB Models";
-    groupModels.models = [NSMutableArray array];
-    
-    for (int i = 0; i < 10; i++) {
-        
-        KColorModel *model = [[KColorModel alloc]init];
-        model.modelColor = [self randomColor];
-        model.modelNameRGBA = self.modelName;
-        
-        [groupModels.models addObject: model];
-    }
-    
-    self.objects = [NSMutableArray arrayWithObjects:groupScoreExellent,
-                                                    groupStudentScoreGood,
-                                                    groupStudentScoreSatisfactionly,
-                                                    groupStudentScoreBad,
-                                                    groupModels, nil];
-    
+    self.tableContents = [self makeData];
+   
 }
 
 #pragma mark - Methods
 
-- (NSArray *)sortingArrayByName:(NSArray *)array{
+- (KGroup *) makeGroupOfStudentsWithName:(NSString *) groupName {
     
-    NSArray *sortedArrayByName = [array sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-        
-        KStudent *student1 = (KStudent *) obj1;
-        KStudent *student2 = (KStudent *) obj2;
-        
-        return [student1.firstName compare:student2.firstName];
-        
-    }];
-
-    return sortedArrayByName;
+    KGroup *groupStudents = [[KGroup alloc]init];
+    groupStudents.students = [NSMutableArray array];
+    groupStudents.name = groupName;
+    
+    return groupStudents;
 }
-- (NSMutableArray *)sortingByScore:(NSMutableArray *)studentsArray byScore:(StudentScore) score{
 
-    NSMutableArray *sortedArrayByScore = [NSMutableArray array];
+- (KGroupModels *) makeGroupOfModelsWithName:(NSString *) groupName {
     
-    for (KStudent *student in studentsArray) {
+    KGroupModels *groupModels = [[KGroupModels alloc]init];
+    groupModels.models = [NSMutableArray array];
+    groupModels.name = groupName;
+
+    return groupModels;
+}
+
+- (NSMutableArray *) makeData{
+    
+    KGroup *groupScoreExellent = [self makeGroupOfStudentsWithName:@"ScoreExellent"];
+    KGroup *groupScoreGood = [self makeGroupOfStudentsWithName:@"ScoreGood"];
+    KGroup *groupScoreSatisfactionly = [self makeGroupOfStudentsWithName:@"ScoreSatisfactionly"];
+    KGroup *groupScoreBad = [self makeGroupOfStudentsWithName:@"ScoreBad"];
+
+    dispatch_queue_t backgroundQueue = dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0);
+    
+    dispatch_async(backgroundQueue, ^{
         
-        if (student.studentScore == score) {
+        for (int i = 0;  i < 30; i++) {
             
-            student.scoreColor = [self scoreColor: student.studentScore];
+            KStudent *student = [[KStudent alloc]init];
             
-            [sortedArrayByScore addObject: student];
+            if (student.studentScore == StudentScoreExellent) {
+                
+                [groupScoreExellent.students addObject:student];
+            }
+            else if (student.studentScore == StudentScoreGood){
+                
+                [groupScoreGood.students addObject:student];
+            }
+            else if (student.studentScore == StudentScoreSatisfactionly){
+                
+                [groupScoreSatisfactionly.students addObject:student];
+            }
+            else if (student.studentScore == StudentScoreBad){
+                
+                [groupScoreBad.students addObject:student];
+            }
+            
         }
+
+        groupScoreExellent.students = [groupScoreExellent nameSort];
+        groupScoreGood.students = [groupScoreGood nameSort];
+        groupScoreSatisfactionly.students = [groupScoreSatisfactionly nameSort];
+        groupScoreBad.students = [groupScoreBad nameSort];
+    });
+
+
+    KGroupModels *groupModels = [self makeGroupOfModelsWithName:@"RGB models"];
+    
+    for (int i = 0; i < 10; i++) {
+        
+        KColorModel *model = [[KColorModel alloc]init];
+        
+        [groupModels.models addObject: model];
     }
-    
-    NSArray *array = [NSArray arrayWithArray:sortedArrayByScore];
-    [sortedArrayByScore removeAllObjects];
-    [sortedArrayByScore addObjectsFromArray: [self sortingArrayByName:array]];
-    
-    return sortedArrayByScore;
-}
 
-- (UIColor*) scoreColor:(StudentScore) score{
-    
-    switch (score) {
-            
-        case StudentScoreExellent:
-            return  [UIColor greenColor];
-            break;
-            
-        case StudentScoreGood:
-            return  [UIColor orangeColor];
-            break;
-            
-        case StudentScoreSatisfactionly:
-            return  [UIColor yellowColor];
-            break;
-            
-        case StudentScoreBad:
-            return  [UIColor redColor];
-            break;
-            
-        default:
-            break;
-    }
-    
-}
-
-
-- (UIColor*)randomColor {
-    
-    CGFloat r = arc4random() % 256;
-    CGFloat g = arc4random() % 256;
-    CGFloat b = arc4random() % 256;
-    
-    self.modelName = [NSString stringWithFormat:@"RGB (%.0f,%.0f,%.0f)",r,g,b];
-    
-    return  [UIColor colorWithRed: r/255. green: g/255. blue: b/255. alpha: 1.];
+    NSMutableArray *content = [NSMutableArray arrayWithObjects:groupScoreExellent,
+                                                               groupScoreGood,
+                                                               groupScoreSatisfactionly,
+                                                               groupScoreBad,
+                                                               groupModels, nil];
+    return content;
 }
 
 
@@ -162,27 +113,24 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     
-    return [self.objects count];
+    return [self.tableContents count];
     
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
     NSInteger number = 0;
-    
-    id object = [self.objects objectAtIndex:section];
+    id object = [self.tableContents objectAtIndex:section];
     
     if ([object isKindOfClass:[KGroup class]]) {
         
         KGroup *group = (KGroup*) object;
-        
         number = [group.students count];
         
     }
-    else if([object isKindOfClass:[KGroupModels class]]){
+    else {
         
         KGroupModels *groupModel = (KGroupModels*) object;
-        
         number = [groupModel.models count];
     }
     
@@ -193,19 +141,16 @@
     
     NSString *title;
 
-    id object = [self.objects objectAtIndex:section];
+    id object = [self.tableContents objectAtIndex:section];
     
     if ([object isKindOfClass:[KGroup class]]) {
         
         KGroup *group = (KGroup*) object;
-        
         title = group.name;
-        
     }
-    else if([object isKindOfClass:[KGroupModels class]]){
+    else {
         
         KGroupModels *groupModel = (KGroupModels*) object;
-        
         title = groupModel.name;
     }
     
@@ -218,14 +163,12 @@
     static NSString *idModel   = @"idModelCell";
     UITableViewCell *cell;
     
-    id object = [self.objects objectAtIndex:indexPath.section];
+    id object = [self.tableContents objectAtIndex:indexPath.section];
     
     if ([object isKindOfClass:[KGroup class]]) {
         
         KGroup *group = (KGroup*) object;
-        
         KStudent *student = [group.students objectAtIndex:indexPath.row];
-        
         cell = [self.tableView dequeueReusableCellWithIdentifier:idStudent];
         
         if (!cell) {
@@ -234,19 +177,14 @@
         }
         
         cell.textLabel.text = [NSString stringWithFormat:@"%@ %@",student.firstName,student.lastName];
-        
         cell.detailTextLabel.text = [NSString stringWithFormat:@"%u",student.studentScore];
-        
         cell.backgroundColor = student.scoreColor;
-        
     }
     
-    else if([object isKindOfClass:[KGroupModels class]]){
+    else {
         
         KGroupModels *groupModel = (KGroupModels*)object;
-        
         KColorModel *model = [groupModel.models objectAtIndex:indexPath.row];
-        
         cell = [self.tableView dequeueReusableCellWithIdentifier:idModel];
         
         if (!cell) {
@@ -255,11 +193,9 @@
         }
         
         cell.textLabel.text = [NSString stringWithFormat:@"%@",model.modelNameRGBA];
-        
         cell.backgroundColor = model.modelColor;
     }
     
-
     return cell;
 }
 @end

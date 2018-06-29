@@ -7,7 +7,24 @@
 //
 
 #import "KGroup.h"
+#import "KStudent.h"
 
 @implementation KGroup
+
+- (NSMutableArray *)nameSort{
+    
+    NSArray *sortedArrayByName = [[self.students copy] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        
+        KStudent *student1 = (KStudent *) obj1;
+        KStudent *student2 = (KStudent *) obj2;
+        
+    return [student1.firstName compare:student2.firstName];
+        
+    }];
+    
+    NSMutableArray *result = [NSMutableArray arrayWithArray:sortedArrayByName];
+    
+    return result;
+}
 
 @end
