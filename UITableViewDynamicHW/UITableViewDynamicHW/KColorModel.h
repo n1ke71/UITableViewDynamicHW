@@ -11,11 +11,10 @@
 
 @interface KColorModel : NSObject
 
-@property (strong, nonatomic) NSString *modelNameRGBA;
 @property (assign, nonatomic) CGFloat redComponent;
 @property (assign, nonatomic) CGFloat greenComponent;
 @property (assign, nonatomic) CGFloat blueComponent;
-@property (strong, nonatomic) UIColor *modelColor;
+@property (strong, nonatomic) UIColor *rgbColor;
 
 - (UIColor*)randomColor;
 

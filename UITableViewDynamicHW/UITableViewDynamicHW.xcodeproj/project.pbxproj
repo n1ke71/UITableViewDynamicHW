@@ -17,6 +17,7 @@
 		B32DB9E220DC1F09003826C3 /* KColorModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B32DB9E120DC1F09003826C3 /* KColorModel.m */; };
 		B32DB9E520DC1F23003826C3 /* KGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = B32DB9E420DC1F23003826C3 /* KGroup.m */; };
 		B32DB9E820DC1F3C003826C3 /* KGroupModels.m in Sources */ = {isa = PBXBuildFile; fileRef = B32DB9E720DC1F3C003826C3 /* KGroupModels.m */; };
+		B372ECA720EBECAF0007AB49 /* DataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B372ECA620EBECAF0007AB49 /* DataModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,8 @@
 		B32DB9E420DC1F23003826C3 /* KGroup.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KGroup.m; sourceTree = "<group>"; };
 		B32DB9E620DC1F3C003826C3 /* KGroupModels.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KGroupModels.h; sourceTree = "<group>"; };
 		B32DB9E720DC1F3C003826C3 /* KGroupModels.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KGroupModels.m; sourceTree = "<group>"; };
+		B372ECA520EBECAF0007AB49 /* DataModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataModel.h; sourceTree = "<group>"; };
+		B372ECA620EBECAF0007AB49 /* DataModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DataModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +73,8 @@
 		B32DB9C320DADDCF003826C3 /* UITableViewDynamicHW */ = {
 			isa = PBXGroup;
 			children = (
+				B372ECA520EBECAF0007AB49 /* DataModel.h */,
+				B372ECA620EBECAF0007AB49 /* DataModel.m */,
 				B32DB9E320DC1F23003826C3 /* KGroup.h */,
 				B32DB9E420DC1F23003826C3 /* KGroup.m */,
 				B32DB9DA20DADEEC003826C3 /* KStudent.h */,
@@ -162,6 +167,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B32DB9E220DC1F09003826C3 /* KColorModel.m in Sources */,
+				B372ECA720EBECAF0007AB49 /* DataModel.m in Sources */,
 				B32DB9E520DC1F23003826C3 /* KGroup.m in Sources */,
 				B32DB9C920DADDCF003826C3 /* ViewController.m in Sources */,
 				B32DB9D420DADDD4003826C3 /* main.m in Sources */,
