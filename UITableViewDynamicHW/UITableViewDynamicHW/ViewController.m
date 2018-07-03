@@ -11,6 +11,7 @@
 #import "KColorModel.h"
 #import "KGroup.h"
 #import "KGroupModels.h"
+#import "DataModel.h"
 
 @interface ViewController ()
 
@@ -26,112 +27,33 @@
     
     self.tableView.contentInset = inset;
     self.tableView.scrollIndicatorInsets = inset;
-    self.tableContents = [self makeData];
+    DataModel *dataModel = [[DataModel alloc]init];
+    self.tableViewData = dataModel.dataForTableView;
    
 }
-
-#pragma mark - Methods
-
-- (KGroup *) makeGroupOfStudentsWithName:(NSString *) groupName {
-    
-    KGroup *groupStudents = [[KGroup alloc]init];
-    groupStudents.students = [NSMutableArray array];
-    groupStudents.name = groupName;
-    
-    return groupStudents;
-}
-
-- (KGroupModels *) makeGroupOfModelsWithName:(NSString *) groupName {
-    
-    KGroupModels *groupModels = [[KGroupModels alloc]init];
-    groupModels.models = [NSMutableArray array];
-    groupModels.name = groupName;
-
-    return groupModels;
-}
-
-- (NSMutableArray *) makeData{
-    
-    KGroup *groupScoreExellent = [self makeGroupOfStudentsWithName:@"ScoreExellent"];
-    KGroup *groupScoreGood = [self makeGroupOfStudentsWithName:@"ScoreGood"];
-    KGroup *groupScoreSatisfactionly = [self makeGroupOfStudentsWithName:@"ScoreSatisfactionly"];
-    KGroup *groupScoreBad = [self makeGroupOfStudentsWithName:@"ScoreBad"];
-
-    dispatch_queue_t backgroundQueue = dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0);
-    
-    dispatch_async(backgroundQueue, ^{
-        
-        for (int i = 0;  i < 30; i++) {
-            
-            KStudent *student = [[KStudent alloc]init];
-            
-            if (student.studentScore == StudentScoreExellent) {
-                
-                [groupScoreExellent.students addObject:student];
-            }
-            else if (student.studentScore == StudentScoreGood){
-                
-                [groupScoreGood.students addObject:student];
-            }
-            else if (student.studentScore == StudentScoreSatisfactionly){
-                
-                [groupScoreSatisfactionly.students addObject:student];
-            }
-            else if (student.studentScore == StudentScoreBad){
-                
-                [groupScoreBad.students addObject:student];
-            }
-            
-        }
-
-        groupScoreExellent.students = [groupScoreExellent nameSort];
-        groupScoreGood.students = [groupScoreGood nameSort];
-        groupScoreSatisfactionly.students = [groupScoreSatisfactionly nameSort];
-        groupScoreBad.students = [groupScoreBad nameSort];
-    });
-
-
-    KGroupModels *groupModels = [self makeGroupOfModelsWithName:@"RGB models"];
-    
-    for (int i = 0; i < 10; i++) {
-        
-        KColorModel *model = [[KColorModel alloc]init];
-        
-        [groupModels.models addObject: model];
-    }
-
-    NSMutableArray *content = [NSMutableArray arrayWithObjects:groupScoreExellent,
-                                                               groupScoreGood,
-                                                               groupScoreSatisfactionly,
-                                                               groupScoreBad,
-                                                               groupModels, nil];
-    return content;
-}
-
 
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     
-    return [self.tableContents count];
+    return [self.tableViewData count];
     
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
     NSInteger number = 0;
-    id object = [self.tableContents objectAtIndex:section];
+    id object = [self.tableViewData objectAtIndex:section];
     
     if ([object isKindOfClass:[KGroup class]]) {
         
         KGroup *group = (KGroup*) object;
         number = [group.students count];
         
-    }
-    else {
+    }else {
         
         KGroupModels *groupModel = (KGroupModels*) object;
-        number = [groupModel.models count];
+        number = [groupModel.modelsOfColors count];
     }
     
     return number;
@@ -141,14 +63,13 @@
     
     NSString *title;
 
-    id object = [self.tableContents objectAtIndex:section];
+    id object = [self.tableViewData objectAtIndex:section];
     
     if ([object isKindOfClass:[KGroup class]]) {
         
         KGroup *group = (KGroup*) object;
         title = group.name;
-    }
-    else {
+    }else {
         
         KGroupModels *groupModel = (KGroupModels*) object;
         title = groupModel.name;
@@ -163,7 +84,7 @@
     static NSString *idModel   = @"idModelCell";
     UITableViewCell *cell;
     
-    id object = [self.tableContents objectAtIndex:indexPath.section];
+    id object = [self.tableViewData objectAtIndex:indexPath.section];
     
     if ([object isKindOfClass:[KGroup class]]) {
         
@@ -176,15 +97,14 @@
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:idStudent];
         }
         
-        cell.textLabel.text = [NSString stringWithFormat:@"%@ %@",student.firstName,student.lastName];
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"%u",student.studentScore];
-        cell.backgroundColor = student.scoreColor;
-    }
-    
-    else {
+        cell.textLabel.text = [student studentDescription:@"Fullname"];
+        cell.detailTextLabel.text = [student studentDescription:@"Score"];
+        cell.backgroundColor = [student scoreColor:student.studentScore];
+        
+    }else {
         
         KGroupModels *groupModel = (KGroupModels*)object;
-        KColorModel *model = [groupModel.models objectAtIndex:indexPath.row];
+        KColorModel *model = [groupModel.modelsOfColors objectAtIndex:indexPath.row];
         cell = [self.tableView dequeueReusableCellWithIdentifier:idModel];
         
         if (!cell) {
@@ -192,8 +112,8 @@
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:idModel];
         }
         
-        cell.textLabel.text = [NSString stringWithFormat:@"%@",model.modelNameRGBA];
-        cell.backgroundColor = model.modelColor;
+        cell.textLabel.text = [model description];
+        cell.backgroundColor = model.rgbColor;
     }
     
     return cell;

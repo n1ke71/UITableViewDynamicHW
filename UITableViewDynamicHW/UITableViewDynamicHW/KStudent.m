@@ -23,21 +23,21 @@ static NSString* lastNames[] = { @"Farrah",@"Laviolette",@"Heal",@"Sechrest",@"R
 
 @implementation KStudent
 
+static unsigned int countFirstNames = sizeof(firstNames) / sizeof(firstNames[0]);
+static unsigned int countlastNames  = sizeof(lastNames) / sizeof(lastNames[0]);
+
 - (instancetype)init
 {
     self = [super init];
     if (self) {
-        static unsigned int countFirstNames = sizeof(firstNames) / sizeof(firstNames[0]);
-        static unsigned int countlastNames  = sizeof(lastNames) / sizeof(lastNames[0]);
         self.firstName    = firstNames[arc4random_uniform(countFirstNames)];
         self.lastName     = lastNames[arc4random_uniform(countlastNames)];
         self.studentScore = (StudentScore)arc4random_uniform(4) + 2;
-        self.scoreColor = [self scoreColor:self.studentScore];
     }
     return self;
 }
 
-- (UIColor*) scoreColor:(StudentScore) score{
+- (UIColor *) scoreColor:(StudentScore) score{
     
     switch (score) {
         case StudentScoreExellent:
@@ -57,4 +57,20 @@ static NSString* lastNames[] = { @"Farrah",@"Laviolette",@"Heal",@"Sechrest",@"R
     }
     
 }
+
+- (NSString *) studentDescription:(NSString *) string{
+
+    
+    if ([string isEqualToString:@"Fullname"]) {
+        
+        string = [NSString stringWithFormat:@"%@ %@",self.firstName,self.lastName];
+        
+    }else if ([string isEqualToString:@"Score"]){
+        
+        string = [NSString stringWithFormat:@"%u",self.studentScore];
+    }
+    
+    return string;
+}
+
 @end

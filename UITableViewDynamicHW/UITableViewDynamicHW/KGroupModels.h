@@ -11,6 +11,6 @@
 @interface KGroupModels : NSObject
 
 @property (strong, nonatomic) NSString *name;
-@property (strong, nonatomic) NSMutableArray *models;
+@property (strong, nonatomic) NSMutableArray *modelsOfColors;
 
 @end

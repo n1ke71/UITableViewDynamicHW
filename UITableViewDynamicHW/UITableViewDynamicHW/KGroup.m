@@ -11,7 +11,7 @@
 
 @implementation KGroup
 
-- (NSMutableArray *)nameSort{
+- (NSArray *)sortByName{
     
     NSArray *sortedArrayByName = [[self.students copy] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
         
@@ -21,10 +21,8 @@
     return [student1.firstName compare:student2.firstName];
         
     }];
-    
-    NSMutableArray *result = [NSMutableArray arrayWithArray:sortedArrayByName];
-    
-    return result;
+
+    return sortedArrayByName;
 }
 
 @end

@@ -11,7 +11,7 @@
 @interface ViewController : UIViewController
 
 @property(weak,nonatomic) IBOutlet UITableView* tableView;
-@property (strong, nonatomic) NSMutableArray *tableContents;
+@property (strong, nonatomic) NSArray *tableViewData;
 
 @end
 
