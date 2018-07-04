@@ -27,8 +27,9 @@
     
     self.tableView.contentInset = inset;
     self.tableView.scrollIndicatorInsets = inset;
+    
     DataModel *dataModel = [[DataModel alloc]init];
-    self.tableViewData = dataModel.dataForTableView;
+    self.cellsArray = dataModel.dataForTableView;
    
 }
 
@@ -36,23 +37,22 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     
-    return [self.tableViewData count];
-    
+    return [self.cellsArray count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
     NSInteger number = 0;
-    id object = [self.tableViewData objectAtIndex:section];
+    id object = [self.cellsArray objectAtIndex:section];
     
     if ([object isKindOfClass:[KGroup class]]) {
         
-        KGroup *group = (KGroup*) object;
+        KGroup *group = (KGroup *) object;
         number = [group.students count];
         
-    }else {
+    }else{
         
-        KGroupModels *groupModel = (KGroupModels*) object;
+        KGroupModels *groupModel = (KGroupModels *) object;
         number = [groupModel.modelsOfColors count];
     }
     
@@ -63,15 +63,16 @@
     
     NSString *title;
 
-    id object = [self.tableViewData objectAtIndex:section];
+    id object = [self.cellsArray objectAtIndex:section];
     
     if ([object isKindOfClass:[KGroup class]]) {
         
-        KGroup *group = (KGroup*) object;
+        KGroup *group = (KGroup *) object;
         title = group.name;
+        
     }else {
         
-        KGroupModels *groupModel = (KGroupModels*) object;
+        KGroupModels *groupModel = (KGroupModels *) object;
         title = groupModel.name;
     }
     
@@ -83,39 +84,42 @@
     static NSString *idStudent = @"idStudentCell";
     static NSString *idModel   = @"idModelCell";
     UITableViewCell *cell;
+  //  [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:idStudent];
+  //  [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:idModel];
     
-    id object = [self.tableViewData objectAtIndex:indexPath.section];
+    id object = [self.cellsArray objectAtIndex:indexPath.section];
     
     if ([object isKindOfClass:[KGroup class]]) {
         
-        KGroup *group = (KGroup*) object;
+        KGroup *group = (KGroup *) object;
         KStudent *student = [group.students objectAtIndex:indexPath.row];
+       // cell = [self.tableView dequeueReusableCellWithIdentifier:idStudent forIndexPath:indexPath];
         cell = [self.tableView dequeueReusableCellWithIdentifier:idStudent];
-        
         if (!cell) {
             
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:idStudent];
         }
         
-        cell.textLabel.text = [student studentDescription:@"Fullname"];
-        cell.detailTextLabel.text = [student studentDescription:@"Score"];
+        cell.textLabel.text = [student description];
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"%d",student.studentScore];
         cell.backgroundColor = [student scoreColor:student.studentScore];
-        
+       
     }else {
         
-        KGroupModels *groupModel = (KGroupModels*)object;
+        KGroupModels *groupModel = (KGroupModels *)object;
         KColorModel *model = [groupModel.modelsOfColors objectAtIndex:indexPath.row];
+       // cell = [self.tableView dequeueReusableCellWithIdentifier:idModel forIndexPath:indexPath];
         cell = [self.tableView dequeueReusableCellWithIdentifier:idModel];
-        
         if (!cell) {
             
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:idModel];
-        }
+       }
         
         cell.textLabel.text = [model description];
         cell.backgroundColor = model.rgbColor;
+      
     }
     
-    return cell;
+   return cell;
 }
 @end

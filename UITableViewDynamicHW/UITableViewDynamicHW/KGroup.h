@@ -7,12 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "KStudent.h"
 
 @interface KGroup : NSObject
 
 @property (strong, nonatomic) NSString *name;
 @property (strong, nonatomic) NSMutableArray *students;
 
-- (NSArray *)sortByName;
-
+- (void)sortByName;
++ (KGroup *) makeGroupWithName:(NSString *) groupName andScore:(StudentScore) studentScore;
 @end

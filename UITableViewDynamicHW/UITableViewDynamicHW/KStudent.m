@@ -26,15 +26,14 @@ static NSString* lastNames[] = { @"Farrah",@"Laviolette",@"Heal",@"Sechrest",@"R
 static unsigned int countFirstNames = sizeof(firstNames) / sizeof(firstNames[0]);
 static unsigned int countlastNames  = sizeof(lastNames) / sizeof(lastNames[0]);
 
-- (instancetype)init
-{
-    self = [super init];
-    if (self) {
-        self.firstName    = firstNames[arc4random_uniform(countFirstNames)];
-        self.lastName     = lastNames[arc4random_uniform(countlastNames)];
-        self.studentScore = (StudentScore)arc4random_uniform(4) + 2;
-    }
-    return self;
++ (KStudent *) randomStudent{
+    
+    KStudent *student = [[KStudent alloc]init];
+    student.firstName    = firstNames[arc4random_uniform(countFirstNames)];
+    student.lastName     = lastNames[arc4random_uniform(countlastNames)];
+    student.studentScore = (StudentScore)arc4random_uniform(4) + 2;
+
+    return student;
 }
 
 - (UIColor *) scoreColor:(StudentScore) score{
@@ -42,35 +41,19 @@ static unsigned int countlastNames  = sizeof(lastNames) / sizeof(lastNames[0]);
     switch (score) {
         case StudentScoreExellent:
             return  [UIColor greenColor];
-            break;
         case StudentScoreGood:
             return  [UIColor orangeColor];
-            break;
         case StudentScoreSatisfactionly:
             return  [UIColor yellowColor];
-            break;
         case StudentScoreBad:
             return  [UIColor redColor];
-            break;
-        default:
-            break;
+        default:break;
     }
-    
 }
 
-- (NSString *) studentDescription:(NSString *) string{
+- (NSString *) description{
 
-    
-    if ([string isEqualToString:@"Fullname"]) {
-        
-        string = [NSString stringWithFormat:@"%@ %@",self.firstName,self.lastName];
-        
-    }else if ([string isEqualToString:@"Score"]){
-        
-        string = [NSString stringWithFormat:@"%u",self.studentScore];
-    }
-    
-    return string;
+    return [NSString stringWithFormat:@"%@ %@", self.firstName, self.lastName];
 }
 
 @end

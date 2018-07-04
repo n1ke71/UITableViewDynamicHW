@@ -8,6 +8,13 @@
 
 #import "KColorModel.h"
 
+@interface KColorModel()
+
+@property (assign, nonatomic) CGFloat redComponent;
+@property (assign, nonatomic) CGFloat greenComponent;
+@property (assign, nonatomic) CGFloat blueComponent;
+
+@end
 
 @implementation KColorModel
 

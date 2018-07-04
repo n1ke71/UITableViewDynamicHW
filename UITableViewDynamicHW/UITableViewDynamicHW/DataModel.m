@@ -25,69 +25,15 @@
 }
 
 
-- (KGroup *) makeGroupOfStudentsWithName:(NSString *) groupName {
-    
-    KGroup *groupStudents = [[KGroup alloc]init];
-    groupStudents.students = [NSMutableArray array];
-    groupStudents.name = groupName;
-    
-    return groupStudents;
-}
-
-- (KGroupModels *) makeGroupOfModelsWithName:(NSString *) groupName {
-    
-    KGroupModels *groupModels = [[KGroupModels alloc]init];
-    groupModels.modelsOfColors = [NSMutableArray array];
-    groupModels.name = groupName;
-    
-    for (int i = 0; i < 10; i++) {
-        KColorModel *model = [[KColorModel alloc]init];
-        [groupModels.modelsOfColors addObject: model];
-    }
-    
-    return groupModels;
-}
-
 - (NSArray *) makeData{
     
-    KGroup *groupScoreExellent = [self makeGroupOfStudentsWithName:@"ScoreExellent"];
-    KGroup *groupScoreGood = [self makeGroupOfStudentsWithName:@"ScoreGood"];
-    KGroup *groupScoreSatisfactionly = [self makeGroupOfStudentsWithName:@"ScoreSatisfactionly"];
-    KGroup *groupScoreBad = [self makeGroupOfStudentsWithName:@"ScoreBad"];
+    KGroup *groupScoreExellent = [KGroup makeGroupWithName:@"ScoreExellent" andScore:StudentScoreExellent];
+    KGroup *groupScoreGood = [KGroup makeGroupWithName:@"ScoreGood" andScore:StudentScoreGood];
+    KGroup *groupScoreSatisfactionly = [KGroup makeGroupWithName:@"ScoreSatisfactionly" andScore:StudentScoreSatisfactionly];
+    KGroup *groupScoreBad = [KGroup makeGroupWithName:@"ScoreBad" andScore:StudentScoreBad];
     
-    dispatch_queue_t backgroundQueue = dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0);
+    KGroupModels *groupModels = [KGroupModels makeGroupOfModelsWithName:@"RGB models"];
     
-    dispatch_async(backgroundQueue, ^{
-        
-        for (int i = 0;  i < 30; i++) {
-            
-            KStudent *student = [[KStudent alloc]init];
-            
-            switch (student.studentScore) {
-                case StudentScoreExellent:
-                    [groupScoreExellent.students addObject:student];
-                    break;
-                case StudentScoreGood:
-                    [groupScoreGood.students addObject:student];
-                    break;
-                case StudentScoreSatisfactionly:
-                     [groupScoreSatisfactionly.students addObject:student];
-                    break;
-                case StudentScoreBad:
-                    [groupScoreBad.students addObject:student];
-                    break;
-                default:
-                    break;
-            }
-        }
-        groupScoreExellent.students = [NSMutableArray arrayWithArray: [groupScoreExellent sortByName]];
-        groupScoreGood.students = [NSMutableArray arrayWithArray: [groupScoreGood sortByName]];
-        groupScoreSatisfactionly.students = [NSMutableArray arrayWithArray: [groupScoreSatisfactionly sortByName]];
-        groupScoreBad.students = [NSMutableArray arrayWithArray: [groupScoreBad sortByName]];
-    });
-    
-    
-    KGroupModels *groupModels = [self makeGroupOfModelsWithName:@"RGB models"];
     NSArray *content = [NSArray arrayWithObjects:groupScoreExellent,
                                                  groupScoreGood,
                                                  groupScoreSatisfactionly,

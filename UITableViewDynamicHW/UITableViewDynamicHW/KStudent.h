@@ -25,5 +25,5 @@ typedef enum{
 @property (assign, nonatomic) StudentScore studentScore;
 
 - (UIColor *) scoreColor:(StudentScore) score;
-- (NSString *) studentDescription:(NSString *) string;
++ (KStudent *) randomStudent;
 @end
