@@ -13,6 +13,6 @@
 @property (strong, nonatomic) NSString *name;
 @property (strong, nonatomic) NSMutableArray *modelsOfColors;
 
-+ (KGroupModels *) makeGroupOfModelsWithName:(NSString *) groupName;
++ (KGroupModels *) makeGroupOfModels;
 
 @end

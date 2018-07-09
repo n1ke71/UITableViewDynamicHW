@@ -10,11 +10,11 @@
 #import "KColorModel.h"
 @implementation KGroupModels
 
-+ (KGroupModels *) makeGroupOfModelsWithName:(NSString *) groupName {
++ (KGroupModels *) makeGroupOfModels {
     
     KGroupModels *groupModels = [[KGroupModels alloc]init];
     groupModels.modelsOfColors = [NSMutableArray array];
-    groupModels.name = groupName;
+    groupModels.name = @"RGB models";
     
     for (int i = 0; i < 10; i++) {
         KColorModel *model = [[KColorModel alloc]init];

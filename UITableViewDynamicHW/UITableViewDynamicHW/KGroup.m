@@ -13,24 +13,35 @@
 
 - (void)sortByName{
     
-    NSArray *sortedArrayByName = [[self.students copy] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+    NSArray *sortedArrayByName = [[self.students copy] sortedArrayUsingComparator:^NSComparisonResult(KStudent *obj1, KStudent *obj2) {
         
-        KStudent *student1 = (KStudent *) obj1;
-        KStudent *student2 = (KStudent *) obj2;
-        
-    return [student1.firstName compare:student2.firstName];
+    return [obj1.firstName compare:obj2.firstName];
         
     }];
     
     self.students = [NSMutableArray arrayWithArray:sortedArrayByName];
 }
 
++ (NSString *) groupNameByScore:(StudentScore) studentScore{
+    switch (studentScore) {
+        case StudentScoreExellent:
+            return  @"ScoreExellent";
+        case StudentScoreGood:
+            return  @"ScoreGood";
+        case StudentScoreSatisfactionly:
+            return  @"ScoreSatisfactionly";
+        case StudentScoreBad:
+            return  @"ScoreBad";
+        default:break;
+    }
+    
+}
 
-+ (KGroup *) makeGroupWithName:(NSString *) groupName andScore:(StudentScore) studentScore{
++ (KGroup *) makeGroupWithScore:(StudentScore) studentScore{
     
     KGroup *groupStudents = [[KGroup alloc]init];
     groupStudents.students = [NSMutableArray array];
-    groupStudents.name = groupName;
+    groupStudents.name = [KGroup groupNameByScore:studentScore];
     dispatch_queue_t backgroundQueue = dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0);
     
     dispatch_async(backgroundQueue, ^{
@@ -38,16 +49,17 @@
         for (int i = 0;  i < 30; i++) {
             
             KStudent *student = [KStudent randomStudent];
-            
             if (student.studentScore == studentScore) {
                 [groupStudents.students addObject:student];
             }
+
         }
-        
+ 
         [groupStudents sortByName];
         
     });
     
     return groupStudents;
 }
+
 @end

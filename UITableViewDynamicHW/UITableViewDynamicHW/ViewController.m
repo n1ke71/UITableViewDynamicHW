@@ -84,8 +84,6 @@
     static NSString *idStudent = @"idStudentCell";
     static NSString *idModel   = @"idModelCell";
     UITableViewCell *cell;
-  //  [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:idStudent];
-  //  [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:idModel];
     
     id object = [self.cellsArray objectAtIndex:indexPath.section];
     
@@ -93,7 +91,6 @@
         
         KGroup *group = (KGroup *) object;
         KStudent *student = [group.students objectAtIndex:indexPath.row];
-       // cell = [self.tableView dequeueReusableCellWithIdentifier:idStudent forIndexPath:indexPath];
         cell = [self.tableView dequeueReusableCellWithIdentifier:idStudent];
         if (!cell) {
             
@@ -108,7 +105,6 @@
         
         KGroupModels *groupModel = (KGroupModels *)object;
         KColorModel *model = [groupModel.modelsOfColors objectAtIndex:indexPath.row];
-       // cell = [self.tableView dequeueReusableCellWithIdentifier:idModel forIndexPath:indexPath];
         cell = [self.tableView dequeueReusableCellWithIdentifier:idModel];
         if (!cell) {
             

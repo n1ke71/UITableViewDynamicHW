@@ -27,12 +27,11 @@
 
 - (NSArray *) makeData{
     
-    KGroup *groupScoreExellent = [KGroup makeGroupWithName:@"ScoreExellent" andScore:StudentScoreExellent];
-    KGroup *groupScoreGood = [KGroup makeGroupWithName:@"ScoreGood" andScore:StudentScoreGood];
-    KGroup *groupScoreSatisfactionly = [KGroup makeGroupWithName:@"ScoreSatisfactionly" andScore:StudentScoreSatisfactionly];
-    KGroup *groupScoreBad = [KGroup makeGroupWithName:@"ScoreBad" andScore:StudentScoreBad];
-    
-    KGroupModels *groupModels = [KGroupModels makeGroupOfModelsWithName:@"RGB models"];
+    KGroup *groupScoreExellent = [KGroup makeGroupWithScore:StudentScoreExellent];
+    KGroup *groupScoreGood = [KGroup makeGroupWithScore:StudentScoreGood];
+    KGroup *groupScoreSatisfactionly = [KGroup makeGroupWithScore:StudentScoreSatisfactionly];
+    KGroup *groupScoreBad = [KGroup makeGroupWithScore:StudentScoreBad];
+    KGroupModels *groupModels = [KGroupModels makeGroupOfModels];
     
     NSArray *content = [NSArray arrayWithObjects:groupScoreExellent,
                                                  groupScoreGood,

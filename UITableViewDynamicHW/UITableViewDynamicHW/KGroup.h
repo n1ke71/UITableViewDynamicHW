@@ -15,5 +15,6 @@
 @property (strong, nonatomic) NSMutableArray *students;
 
 - (void)sortByName;
-+ (KGroup *) makeGroupWithName:(NSString *) groupName andScore:(StudentScore) studentScore;
++ (KGroup *) makeGroupWithScore:(StudentScore) studentScore;
++ (NSString *) groupNameByScore:(StudentScore) studentScore;
 @end
